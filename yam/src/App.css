@@ -36,3 +36,30 @@
     transform: rotate(360deg);
   }
 }
+
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+}
+
+main {
+  flex-direction: row;
+  max-width: 640px;
+  flex: 1 0 0;
+}
+
+main h1 {
+  text-align: center;
+}
+
+footer {
+  flex: 0 0 1rem;
+  padding: 0.3rem;
+  text-align: center;
+}
