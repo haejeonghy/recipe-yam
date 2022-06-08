@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import { useNavigate } from "react-router-dom"
-import './Join.css';
+import './css/User.css';
 
 
 const Join = () => {
@@ -11,7 +11,7 @@ const Join = () => {
     const [password, setPassword] = useState('')
     const [nickname, setNickname] = useState('')
 
-    function join() {
+    function sendJoin() {
         fetch('http://localhost:4000/join', {
             method: "POST",
             headers: {
@@ -49,8 +49,8 @@ const Join = () => {
                 <button type="button">구글 계정으로 가입하기</button>
             </div>
             <div>
-                <button type="button" onClick={() => join()}>가입</button>
-                <button type="button">취소</button>
+                <button type="button" onClick={() => sendJoin()}>가입</button>
+                <button type="button" onClick={() => window.location.href='/'}>취소</button>
             </div>
         </div>
     )

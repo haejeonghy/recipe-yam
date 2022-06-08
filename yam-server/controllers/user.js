@@ -1,13 +1,21 @@
 const {user} = require('../models')
 
+const STATUS_SUCCESS = 200
+const STATUS_JOIN_FAIL = 409
+const STATUS_LOGIN_FAIL = 401
+const crypto = require('crypto');
+
+function getHashedPassword(password) {
+    return crypto.createHmac('sha256', process.env.SECRET_KEY).update(password).digest('hex')
+}
+
 module.exports = {
     join: async function(req, res) {
-        console.log(req.body)
         const emailCheckInfo = await user.findOne({
             where : {email: req.body.email}
         })
         if(emailCheckInfo) {
-            res.status("409").send("이미 가입한 이메일입니다.");
+            res.status(STATUS_JOIN_FAIL).send("이미 가입한 이메일입니다.");
         } 
         
         const nicknameCheckInfo = await user.findOne({
@@ -15,23 +23,43 @@ module.exports = {
         })
 
         if(nicknameCheckInfo) {
-            res.status("409").send("중복된 닉네임입니다.");
+            res.status(STATUS_JOIN_FAIL).send("중복된 닉네임입니다.");
         }
         
+        const hashedPassword = getHashedPassword(req.body.password)
         await user.create({
             email: req.body.email
             , nickname: req.body.nickname
-            , password: req.body.password
+            , password: hashedPassword
         })
-        res.send("200")
+        res.send(STATUS_SUCCESS)
         
     }
     , login: async function(req, res) {
-        res.send("test")
+        const hashedPassword = getHashedPassword(req.body.password)
+        const userInfo = await user.findOne({
+            where: {
+                email: req.body.email
+                , password: hashedPassword
+            }
+        })
+        if(userInfo) {
+            req.session.email = userInfo.email
+            req.session.nickname = userInfo.nickname
+            req.session.userId = userInfo.id
+            res.json({
+                "userInfo":userInfo
+            })
+        } else {
+            res.status(STATUS_LOGIN_FAIL).send("잘못된 사용자 정보입니다.")
+        }
 
     }
-    , logout: async function(req, res) {
-        res.send("test")
+    , logout: function(req, res) {
+        req.session.email = undefined
+        req.session.nickname = undefined
+        req.session.userId = undefined
+        res.status(STATUS_SUCCESS).send()
 
-    } 
+    }
 }
