@@ -6,13 +6,7 @@ const controllers = require('./controllers');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(
-    cors({
-      origin: ['https://localhost:3000'],
-      credentials: true,
-      methods: ['GET', 'POST', 'OPTIONS']
-    })
-);
+app.use(cors());
 app.post('/join', controllers.user.join)
 app.post('/login', controllers.user.login)
 app.get('/logout', controllers.user.logout)
