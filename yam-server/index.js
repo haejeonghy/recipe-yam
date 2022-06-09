@@ -23,9 +23,11 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
+
 app.post('/join', controllers.user.join)
 app.post('/login', controllers.user.login)
 app.post('/logout', controllers.user.logout)
+app.post('/modify', controllers.user.modify)
 
 const HTTPS_PORT = process.env.HTTPS_PORT || 4000;
 let server = app.listen(HTTPS_PORT, () => console.log(`http server running ${HTTPS_PORT}`));
