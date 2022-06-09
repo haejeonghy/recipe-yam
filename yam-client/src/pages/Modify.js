@@ -22,6 +22,7 @@ const Modify = () => {
                 , newPassword: newPassword
                 , nickname: nickname
             })
+            ,credentials: 'include'
         })
         .then(response => response.json())
         .then(data => {

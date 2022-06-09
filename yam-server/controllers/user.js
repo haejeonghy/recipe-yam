@@ -68,7 +68,7 @@ module.exports = {
     , modify: async function(req, res) {
         const hashedPassword = getHashedPassword(req.body.currentPassword)
         const passwordCheckInfo = await user.findOne({
-            where : {email: req.body.email, password: hashedPassword}
+            where : {email: req.session.email, password: hashedPassword}
         })
         if(!passwordCheckInfo) {
             res.status(STATUS_WRONG_PASSWORD).send("비밀 번호가 맞지 않습니다.");
@@ -86,17 +86,17 @@ module.exports = {
         const hashedNewPassword = getHashedPassword(req.body.newPassword)
         await user.update(
             {
-            nickname: req.body.nickname
-            , password: hashedNewPassword
+                nickname: req.body.nickname
+                , password: hashedNewPassword
             }
             , {
                 where: {
-                    email: req.body.email
+                    email: req.session.email
                 }
             }
         ).then(()=> {
             const userInfo = user.findOne({
-                where : {email: req.body.email}
+                where : {email: req.session.email}
             }).then((userInfo) => {
                 res.json({"userInfo":userInfo})
             })

@@ -12,6 +12,7 @@ const Main = () => {
             headers: {
                 "content-type":"application/json"
             }
+            ,credentials: 'include'
         })
         window.sessionStorage.clear()
         navigate('/')

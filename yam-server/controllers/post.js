@@ -1,15 +1,31 @@
-module.exports = (req, res) => {
-  const accessTokenData = isAuthorized(req);
-  // TODO: 로그인 여부를 판단하고, Access token payload를 이용하여 응답을 제공하세요.
-  if(!accessTokenData) {
-    res.status(401).send({ data: null, message: 'not authorized' });
-  } else {
-    res.cookie('jwt', req.cookie)
-    res.status(200).json({
-      'data': {
-        'userInfo':accessTokenData
+const {post} = require('../models')
+const upload = require('../utils/file');
+const multer = require('multer');
+const moment = require('moment');
+const STATUS_SUCCESS = 200
+
+module.exports =  {
+  write: function(req, res) {
+
+    const userId = req.session.userId
+
+    upload(req, res, async function(err) {
+      if (err instanceof multer.MulterError) {
+        return res.status(500);
+      } else if (err) {
+        return res.status(500);
       }
+
+      await post.create({
+        title: req.body.title
+        , user_id: userId
+        , recipe: req.body.recipe
+        , image_title: req.file.originalname
+        , image_path : '/images/' + req.file.filename
+      })
+      res.send()
     })
+
+
   }
-  
 };

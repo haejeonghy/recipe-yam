@@ -22,6 +22,7 @@ const Join = () => {
                 password: password,
                 nickname: nickname
             })
+            ,credentials: 'include'
         }).then(function(res){
             if(res.status === 200) {
                 alert("가입되었습니다.")

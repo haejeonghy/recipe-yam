@@ -20,6 +20,7 @@ const Login = (props) => {
                 email: email,
                 password: password
             })
+            ,credentials: 'include'
         })
         .then(response => response.json())
         .then(data => {
