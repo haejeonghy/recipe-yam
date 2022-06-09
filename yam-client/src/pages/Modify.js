@@ -18,8 +18,7 @@ const Modify = () => {
                 "content-type":"application/json"
             },
             body: JSON.stringify({
-                email: userInfo.email
-                , currentPassword: currentPassword
+                currentPassword: currentPassword
                 , newPassword: newPassword
                 , nickname: nickname
             })

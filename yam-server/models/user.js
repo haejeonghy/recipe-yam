@@ -8,18 +8,18 @@ module.exports = (sequelize, DataTypes) => {
     user.init(
       {
         id: {
-          type: DataTypes.NUMBER,
-          primaryKey: true,
+          type: DataTypes.NUMBER
+          , primaryKey: true
         },
-        email: DataTypes.STRING,
-        password: DataTypes.STRING,
-        nickname: DataTypes.STRING
+        email: DataTypes.STRING
+        , password: DataTypes.STRING
+        , nickname: DataTypes.STRING
       },
       {
-        sequelize,
-        modelName: 'user',
-        createdAt: false,
-        updatedAt: false
+        sequelize
+        , modelName: 'user'
+        , createdAt: false
+        , updatedAt: false
       }
     );
     return user;
