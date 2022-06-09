@@ -13,9 +13,11 @@ import Write from './pages/Write';
 import Header from './pages/common/Header';
 import Footer from './pages/common/Footer';
 
-import { Route, Routes } from "react-router-dom";
-
+import { Navigate, Route, Routes } from "react-router-dom";
+ 
 const App = () => {
+
+  const isLoggedIn = window.sessionStorage.getItem('userInfo')
 
   return (
     <div>
@@ -26,9 +28,9 @@ const App = () => {
             <Route path="/" element={<Main/>}/>
             <Route path="/join" element={<Join />}/>
             <Route path="/login" element={<Login />}/>
-            <Route path="/modify" element={<Modify />}/>
-            <Route path="/update" element={<Update />}/>
-            <Route path="/write" element={<Write />}/>
+            <Route element={isLoggedIn ? <Modify /> : <Navigate to="/"/>}  path="/modify" />
+            <Route element={isLoggedIn ? <Update /> : <Navigate to="/"/>} path="/update"/>
+            <Route element={isLoggedIn ? <Write /> : <Navigate to="/"/>} path="/write"/>
           </Routes>
         </section>
         <Footer/>
