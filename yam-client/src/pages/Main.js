@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom"
 
-const Main = (props) => {
+const Main = () => {
 
     const navigate = useNavigate();
     let userInfo;

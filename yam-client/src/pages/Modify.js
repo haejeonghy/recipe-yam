@@ -39,7 +39,7 @@ const Modify = () => {
             <h2>개인정보 수정</h2>
             <div>
                 <label>이메일</label>
-                <label> {userInfo['email']}</label>    
+                <label>{userInfo['email']}</label>    
             </div> 
             <div>
                 <label>현재 비밀번호</label>

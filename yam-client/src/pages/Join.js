@@ -11,7 +11,7 @@ const Join = () => {
     const [password, setPassword] = useState('')
     const [nickname, setNickname] = useState('')
 
-    function sendJoin() {
+    function join() {
         fetch('http://localhost:4000/join', {
             method: "POST",
             headers: {
@@ -49,7 +49,7 @@ const Join = () => {
                 <button type="button">구글 계정으로 가입하기</button>
             </div>
             <div>
-                <button type="button" onClick={() => sendJoin()}>가입</button>
+                <button type="button" onClick={() => join()}>가입</button>
                 <button type="button" onClick={() => window.location.href='/'}>취소</button>
             </div>
         </div>

@@ -9,7 +9,8 @@ const Login = (props) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    function sendLogin() {
+    function login() {
+        
         fetch('http://localhost:4000/login', {
             method: "POST",
             headers: {
@@ -42,7 +43,7 @@ const Login = (props) => {
                 <button type="button">구글 계정으로 로그인하기</button>
             </div>
             <div>
-                <button type="button" onClick={() => sendLogin()}>로그인</button>
+                <button type="button" onClick={() => login()}>로그인</button>
                 <button type="button" onClick={() => window.location.href='/join'}>회원 가입</button>
                 <button type="button" onClick={() => window.location.href='/'}>취소</button>
             </div>
