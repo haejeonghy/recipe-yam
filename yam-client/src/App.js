@@ -14,12 +14,8 @@ import Header from './pages/common/Header';
 import Footer from './pages/common/Footer';
 
 import { Route, Routes } from "react-router-dom";
-import { useState } from 'react'
 
 const App = () => {
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [userInfo, setUserInfo] = useState(null)
 
   return (
     <div>
@@ -27,9 +23,9 @@ const App = () => {
         <Header/>
         <section>
           <Routes>
-            <Route path="/" element={<Main isLoggedIn={isLoggedIn} userInfo={userInfo} setIsLoggedIn={setIsLoggedIn} setUserInfo={setUserInfo}/>}/>
+            <Route path="/" element={<Main/>}/>
             <Route path="/join" element={<Join />}/>
-            <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} setUserInfo={setUserInfo} />}/>
+            <Route path="/login" element={<Login />}/>
             <Route path="/modify" element={<Modify />}/>
             <Route path="/update" element={<Update />}/>
             <Route path="/write" element={<Write />}/>

@@ -1,27 +1,33 @@
 import React from "react";
+import { useNavigate } from "react-router-dom"
 
 const Main = (props) => {
 
+    const navigate = useNavigate();
+    let userInfo;
+
     function logout() {
         fetch('http://localhost:4000/logout', {
-            method: "GET",
+            method: "POST",
             headers: {
                 "content-type":"application/json"
             }
         })
-        .then(window.location.replace('/'))
-        props.setIsLoggedIn(false)
-        props.setUserInfo(null)
+        window.sessionStorage.clear()
+        navigate('/')
     }
 
+    if(window.sessionStorage.getItem("userInfo") !== null) {
+        userInfo = JSON.parse(window.sessionStorage.getItem('userInfo'))
+    } 
     return (
         <div>
             <h2>메인페이지</h2>
             {
-            props.isLoggedIn
+            userInfo !== undefined
             ?   <div>
                     <div>
-                        <div>{props.userInfo.nickname}님이 로그인했습니다.</div>
+                        <div>{userInfo['nickname']}님이 로그인했습니다.</div>
                     </div>
                     <div>
                         <button type="button" onClick={() => logout()}>로그아웃</button>

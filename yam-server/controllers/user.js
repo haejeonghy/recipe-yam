@@ -16,6 +16,7 @@ module.exports = {
         })
         if(emailCheckInfo) {
             res.status(STATUS_JOIN_FAIL).send("이미 가입한 이메일입니다.");
+            return
         } 
         
         const nicknameCheckInfo = await user.findOne({
@@ -24,6 +25,7 @@ module.exports = {
 
         if(nicknameCheckInfo) {
             res.status(STATUS_JOIN_FAIL).send("중복된 닉네임입니다.");
+            return
         }
         
         const hashedPassword = getHashedPassword(req.body.password)

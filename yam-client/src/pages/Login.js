@@ -22,9 +22,7 @@ const Login = (props) => {
         })
         .then(response => response.json())
         .then(data => {
-            console.log(props)
-            props.setIsLoggedIn(true)
-            props.setUserInfo(data.userInfo)
+            window.sessionStorage.setItem("userInfo", JSON.stringify(data.userInfo))
             navigate('/')
         })
     }
