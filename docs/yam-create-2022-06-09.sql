@@ -11,7 +11,7 @@ CREATE TABLE `posts` (
   `user_id` int NOT NULL,
   `created_at` datetime DEFAULT (now()),
   `updated_at` datetime DEFAULT (now()),
-  `recipe` varchar(255),
+  `recipe` varchar(10000),
   `image_title` varchar(255),
   `image_path` varchar(255)
 );
