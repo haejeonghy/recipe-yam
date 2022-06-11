@@ -29,7 +29,7 @@ const App = () => {
             <Route path="/join" element={<Join />}/>
             <Route path="/login" element={<Login />}/>
             <Route element={isLoggedIn ? <Modify /> : <Navigate to="/"/>}  path="/modify" />
-            <Route element={isLoggedIn ? <Update /> : <Navigate to="/"/>} path="/update"/>
+            <Route element={isLoggedIn ? <Update /> : <Navigate to="/"/>} path="/update/:id"/>
             <Route element={isLoggedIn ? <Write /> : <Navigate to="/"/>} path="/write"/>
           </Routes>
         </section>

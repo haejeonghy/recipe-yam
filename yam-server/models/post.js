@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         , title: DataTypes.STRING
         , user_id: DataTypes.NUMBER
         , created_at: DataTypes.DATE
-        , update_at: DataTypes.DATE
+        , updated_at: DataTypes.DATE
         , recipe: DataTypes.STRING
         , image_title: DataTypes.STRING
         , image_path: DataTypes.STRING
