@@ -74,6 +74,7 @@ module.exports =  {
         , {
             where: {
               id: req.body.id
+              , user_id: userId
             }
         } 
       )
@@ -90,9 +91,13 @@ module.exports =  {
       res.json({ "postInfo" : postInfo })
   }
   , remove: async function(req, res) {
+
+    const userId = req.session.userId
+
     await post.destroy({
       where: {
         id: req.query.id
+        , user_id: userId
       }
     })
     res.send()

@@ -34,19 +34,21 @@ const Update = (props) => {
         data.append('recipe', recipe)
         data.append('id', id)
         fetch('http://localhost:4000/update', {
-            method: "POST",
-            body: data
-            ,credentials: 'include'
+            method: "POST"
+            , body: data
+            , credentials: 'include'
         })
-        .then((response) => {
+        .then(() => {
             navigate('/')
         })
     }
 
     function remove() {
         if(window.confirm("삭제하시겠습니까?")){
-            fetch('http://localhost:4000/remove?' + new URLSearchParams({id: id}))
-            .then((response) => {
+            fetch('http://localhost:4000/remove?' + new URLSearchParams({id: id}), {
+                credentials: 'include'
+            })
+            .then(() => {
                 navigate('/')
             })
         }
@@ -75,7 +77,7 @@ const Update = (props) => {
             </div>
             <div>
                 <button type="button" onClick={() => update()}>수정</button>
-                <button type="button" onClick={() => remove()}>수정</button>
+                <button type="button" onClick={() => remove()}>삭제</button>
                 <button type="button">취소</button>
             </div> 
         </div>
