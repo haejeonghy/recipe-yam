@@ -9,18 +9,20 @@ const Write = () => {
     const [title, setTitle] = useState('')
     const [recipe, setRecipe] = useState('')
     const [image, setImage] = useState(null)
+    const [tags, setTags] = useState('')
 
     function write() {
         const data = new FormData()
         data.append('file', image)
         data.append('title', title)
         data.append('recipe', recipe)
+        data.append('tags', tags)
         fetch('http://localhost:4000/write', {
             method: "POST"
             , body: data
             , credentials: 'include'
         })
-        .then((response) => {
+        .then(() => {
             navigate('/')
         })
     }
@@ -41,7 +43,7 @@ const Write = () => {
             </div>
             <div>
                 <label>재료 태그</label>
-                <input type="text" placeholder="쉼표로 구분합니다."/>
+                <input type="text" placeholder="쉼표로 구분합니다." value={tags} onChange={(e)=> setTags(e.target.value.trim())}/>
             </div>
             <div>
                 <button type="button" onClick={() => write()}>등록</button>

@@ -1,9 +1,44 @@
-const {post} = require('../models')
+const {post, sequelize} = require('../models')
+var Sequelize = require('sequelize');
+const {ingredient} = require('../models')
 const upload = require('../utils/file');
 const multer = require('multer');
-const moment = require('moment');
 const fs = require('fs');
-const STATUS_SUCCESS = 200
+const STATUS_FAILED = 500
+
+async function saveIngredients(postId, ingredients) {
+
+  for (let inputIngredient of ingredients) {
+
+    inputIngredient.trim()
+    const savedIngredient = await ingredient.findOne({
+      where: {
+        ingredient: inputIngredient
+      }
+    })
+
+    let ingredientId
+
+    if(!savedIngredient) {
+      const newIngredient = await ingredient.create({
+        ingredient: inputIngredient
+      })
+      ingredientId = newIngredient.null
+    } else {
+      ingredientId = savedIngredient.id
+    }
+
+    const inputJoinQuery = 'INSERT INTO post_ingredients (post_id, ingredient_id) value(:postId, :ingredientId)'
+    const inputJoinValue = {
+      postId: postId
+      , ingredientId: ingredientId
+    }
+
+    await sequelize.query(inputJoinQuery, {replacements: inputJoinValue})
+         
+  }
+
+}
 
 module.exports =  {
   write: function(req, res) {
@@ -12,19 +47,24 @@ module.exports =  {
 
     upload(req, res, async function(err) {
       if (err instanceof multer.MulterError) {
-        return res.status(500);
+        return res.status(STATUS_FAILED);
       } else if (err) {
-        return res.status(500);
+        return res.status(STATUS_FAILED);
       }
 
-      await post.create({
+      const newPostInfo = await post.create({
         title: req.body.title
         , user_id: userId
         , recipe: req.body.recipe
         , image_title: req.file.originalname
         , image_path : 'images/' + req.file.filename
       })
-      res.send()
+
+      const postId = newPostInfo.null
+      const ingredients = req.body.tags.split(",")
+      saveIngredients(postId, ingredients)
+      res.send()  
+
     })
 
   }
@@ -34,9 +74,9 @@ module.exports =  {
 
     upload(req, res, async function(err) {
       if (err instanceof multer.MulterError) {
-        return res.status(500);
+        return res.status(STATUS_FAILED);
       } else if (err) {
-        return res.status(500);
+        return res.status(STATUS_FAILED);
       }
 
       if(req.file === undefined){
@@ -52,32 +92,42 @@ module.exports =  {
              }
           }
         )
-        res.send()
-        return
+
+      } else {
+
+        const postInfo = await post.findOne({
+          where: {
+            id: req.body.id
+          }
+        })
+        
+        fs.unlinkSync(postInfo.image_path)
+  
+        await post.update(
+          {
+            title: req.body.title
+            , recipe: req.body.recipe
+            , image_title: req.file.originalname
+            , image_path : 'images/' + req.file.filename
+          }
+          , {
+              where: {
+                id: req.body.id
+                , user_id: userId
+              }
+          } 
+        )
       }
 
-      const postInfo = await post.findOne({
-        where: {
-          id: req.body.id
-        }
-      })
-      
-      fs.unlinkSync(postInfo.image_path)
+      const deleteJoinQuery = 'DELETE FROM post_ingredients WHERE post_id = :postId'
+      const deleteJoinValue = {
+        postId: req.body.id
+      }
+  
+      await sequelize.query(deleteJoinQuery, {replacements: deleteJoinValue})
+      let tags = req.body.tags
+      saveIngredients(req.body.id, tags.split(","))
 
-      await post.update(
-        {
-          title: req.body.title
-          , recipe: req.body.recipe
-          , image_title: req.file.originalname
-          , image_path : 'images/' + req.file.filename
-        }
-        , {
-            where: {
-              id: req.body.id
-              , user_id: userId
-            }
-        } 
-      )
       res.send()
     })
 
@@ -88,7 +138,13 @@ module.exports =  {
           id: req.query.id
         }
       })
-      res.json({ "postInfo" : postInfo })
+      const selectTagsQuery = 'select group_concat(ingredients.ingredient) as tags from ingredients, post_ingredients where post_ingredients.post_id = :postId AND ingredients.id = post_ingredients.ingredient_id'
+      const selectTagsValue = {
+        postId: req.query.id
+      }
+
+      const tags = await sequelize.query(selectTagsQuery, {replacements: selectTagsValue})
+      res.json({ "postInfo" : postInfo,  "tags": tags})
   }
   , remove: async function(req, res) {
 

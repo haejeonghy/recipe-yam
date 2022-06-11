@@ -10,6 +10,7 @@ const Update = (props) => {
     const [recipe, setRecipe] = useState('')
     const [image, setImage] = useState(null)
     const [imagePath, setImagePath] = useState('')
+    const [tags, setTags] = useState('')
 
     let {id} = useParams()
 
@@ -21,6 +22,7 @@ const Update = (props) => {
             setTitle(postInfo.title)
             setRecipe(postInfo.recipe)
             setImagePath(postInfo.image_path)
+            setTags(data.tags[0][0].tags)
         })
     }
     if(imagePath === '') {
@@ -32,6 +34,7 @@ const Update = (props) => {
         data.append('file', image)
         data.append('title', title)
         data.append('recipe', recipe)
+        data.append('tags', tags)
         data.append('id', id)
         fetch('http://localhost:4000/update', {
             method: "POST"
@@ -73,7 +76,7 @@ const Update = (props) => {
             </div>
             <div>
                 <label>재료 태그</label>
-                <input type="text" placeholder="쉼표로 구분합니다."/>
+                <input type="text" value={tags} onChange={(e) => setTags(e.target.value)} placeholder="쉼표로 구분합니다."/>
             </div>
             <div>
                 <button type="button" onClick={() => update()}>수정</button>
