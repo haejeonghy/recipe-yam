@@ -16,9 +16,9 @@ const Write = () => {
         data.append('title', title)
         data.append('recipe', recipe)
         fetch('http://localhost:4000/write', {
-            method: "POST",
-            body: data
-            ,credentials: 'include'
+            method: "POST"
+            , body: data
+            , credentials: 'include'
         })
         .then((response) => {
             navigate('/')

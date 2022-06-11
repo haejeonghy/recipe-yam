@@ -13,16 +13,16 @@ const Join = () => {
 
     function join() {
         fetch('http://localhost:4000/join', {
-            method: "POST",
-            headers: {
+            method: "POST"
+            , headers: {
                 "content-type":"application/json"
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-                nickname: nickname
+            }
+            , body: JSON.stringify({
+                email: email
+                , password: password
+                , nickname: nickname
             })
-            ,credentials: 'include'
+            , credentials: 'include'
         }).then(function(res){
             if(res.status === 200) {
                 alert("가입되었습니다.")

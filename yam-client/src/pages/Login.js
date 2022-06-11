@@ -12,15 +12,15 @@ const Login = (props) => {
     function login() {
         
         fetch('http://localhost:4000/login', {
-            method: "POST",
-            headers: {
+            method: "POST"
+            , headers: {
                 "content-type":"application/json"
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password
+            }
+            , body: JSON.stringify({
+                email: email
+                , password: password
             })
-            ,credentials: 'include'
+            , credentials: 'include'
         })
         .then(response => response.json())
         .then(data => {

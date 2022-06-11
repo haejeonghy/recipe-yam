@@ -8,11 +8,11 @@ const Main = () => {
 
     function logout() {
         fetch('http://localhost:4000/logout', {
-            method: "POST",
-            headers: {
+            method: "POST"
+            , headers: {
                 "content-type":"application/json"
             }
-            ,credentials: 'include'
+            , credentials: 'include'
         })
         window.sessionStorage.clear()
         navigate('/')
