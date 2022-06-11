@@ -56,7 +56,6 @@ module.exports =  {
         title: req.body.title
         , user_id: userId
         , recipe: req.body.recipe
-        , image_title: req.file.originalname
         , image_path : 'images/' + req.file.filename
       })
 
@@ -107,7 +106,6 @@ module.exports =  {
           {
             title: req.body.title
             , recipe: req.body.recipe
-            , image_title: req.file.originalname
             , image_path : 'images/' + req.file.filename
           }
           , {
