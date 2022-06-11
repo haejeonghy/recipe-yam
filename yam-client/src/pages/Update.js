@@ -11,6 +11,7 @@ const Update = (props) => {
     const [image, setImage] = useState(null)
     const [imagePath, setImagePath] = useState('')
     const [tags, setTags] = useState('')
+    const [imageSrc, setImageSrc] = useState("");
 
     let {id} = useParams()
 
@@ -28,6 +29,10 @@ const Update = (props) => {
     if(imagePath === '') {
         getPostInfo()
     }
+
+    const saveFileImage = (e) => {
+        setImageSrc(URL.createObjectURL(e.target.files[0]));
+      };
 
     function update() {
         const data = new FormData()
@@ -66,10 +71,14 @@ const Update = (props) => {
             </div>
             <div>
                 <label>이미지</label>
-                <input type="file" onChange={(e) => setImage(e.target.files[0])}/>
+                <input type="file" onChange={(e) => {
+                        setImage(e.target.files[0])
+                        saveFileImage(e)
+                    }
+                }/>
             </div>
             <div>
-                <img src={"http://localhost:4000/" + imagePath} alt=""/>
+                {imageSrc ? <img src={imageSrc} alt=''/> : <img src={"http://localhost:4000/" + imagePath} alt=""/>}
             </div>
             <div>
                 <textarea value={recipe} onChange={(e) => setRecipe(e.target.value)}/>

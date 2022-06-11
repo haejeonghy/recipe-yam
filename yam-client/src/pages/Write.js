@@ -10,6 +10,7 @@ const Write = () => {
     const [recipe, setRecipe] = useState('')
     const [image, setImage] = useState(null)
     const [tags, setTags] = useState('')
+    const [imageSrc, setImageSrc] = useState("");
 
     function write() {
         const data = new FormData()
@@ -27,6 +28,11 @@ const Write = () => {
         })
     }
 
+    const saveFileImage = (e) => {
+        setImageSrc(URL.createObjectURL(e.target.files[0]));
+      };
+
+    
     return (
         <div>
             <h3>레시피 등록</h3>
@@ -36,7 +42,14 @@ const Write = () => {
             </div>
             <div>
                 <label>이미지</label>
-                <input type="file" onChange={(e) => setImage(e.target.files[0])}/>
+                <input type="file" onChange={(e) => {
+                        setImage(e.target.files[0])
+                        saveFileImage(e)
+                    }
+                }/>
+            </div>
+            <div>
+                {imageSrc && (<img src={imageSrc} alt=''/>)}
             </div>
             <div>
                 <textarea value={recipe} onChange={(e) => setRecipe(e.target.value)}/>
