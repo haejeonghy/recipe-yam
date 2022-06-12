@@ -2,11 +2,22 @@ import React, {useState} from "react";
 import { useNavigate } from "react-router-dom"
 
 const Main = () => {
-
-    const [posts, setPosts] = useState(null)
-
     const navigate = useNavigate();
+    const [posts, setPosts] = useState([])
+
     let userInfo;
+
+    search()
+
+    function search() {
+        fetch('http://localhost:4000/search?' + new URLSearchParams({keyword: '', userId:''})
+        , {credentials: 'include'})
+        .then((response) => response.json())
+        .then(data => {
+            let newPosts = Array(data.result[0])
+            setPosts(newPosts[0])
+        })
+    }
 
     function logout() {
         fetch('http://localhost:4000/logout', {
@@ -20,23 +31,10 @@ const Main = () => {
         navigate('/')
     }
 
-    if(posts === null) {
-        getPostInfo()
-    }
-
-    function getPostInfo() {
-        fetch('http://localhost:4000/search?' + new URLSearchParams({keyword: '', userId:''})
-        , {credentials: 'include'})
-        .then((response) => response.json())
-        .then(data => {
-            console.log(data.result[0])
-        })
-    }
-
     if(window.sessionStorage.getItem("userInfo") !== null) {
         userInfo = JSON.parse(window.sessionStorage.getItem('userInfo'))
     } 
-    
+
     return (
         <div>
             <h2>메인페이지</h2>
@@ -58,19 +56,27 @@ const Main = () => {
                 </div>
             }
             <div>
-                태그 들어갈 자리
+                태그 들어갈 자리<button onClick={()=> search()}>클릭</button>
             </div>
-            <div className="post">
-                <img src='' alt=''/>
-                <div>
-                    tags
-                </div>
-                <div>
-                    <span>제목</span><span>작성자 닉네임</span><span>작성 일자</span>
-                </div>
-                <div>
-                    레시피
-                </div>
+            <div> 
+                {posts.length > 0 ? 
+                    posts.map((el, index) => {
+                        return (
+                            <div className="post" key={el.postId}>
+                                <img src={"http://localhost:4000/" + el.imagePath} alt=''/>
+                                <div>
+                                    {el.ingredients}
+                                </div>
+                                <div>
+                                    <span>{el.title}</span><span>{el.nickname}</span><span>{el.created_at}</span>
+                                </div>
+                                <div>
+                                    {el.recipe}
+                                </div>
+                            </div>
+                        )
+                    }) 
+                    : ''}
             </div>
         </div>
     )

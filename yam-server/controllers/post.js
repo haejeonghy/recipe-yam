@@ -162,8 +162,13 @@ module.exports =  {
   }
   , search: async function(req, res) {
     const searchPostQuery = 
-      `select posts.* 
-        , users.*
+      `select posts.id AS postId
+          , posts.title AS title
+          , posts.recipe AS recipe
+          , posts.created_at AS createdAt
+          , posts.image_path AS imagePath
+          , users.id AS userId
+          , users.nickname AS nickname
         , (
             select group_concat(ingredients.ingredient, "--",ingredients.id)
             from ingredients, post_ingredients 
