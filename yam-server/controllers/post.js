@@ -136,7 +136,11 @@ module.exports =  {
           id: req.query.id
         }
       })
-      const selectTagsQuery = 'select group_concat(ingredients.ingredient) as tags from ingredients, post_ingredients where post_ingredients.post_id = :postId AND ingredients.id = post_ingredients.ingredient_id'
+      const selectTagsQuery = 
+      `select group_concat(ingredients.ingredient) as tags 
+      from ingredients, post_ingredients 
+      where post_ingredients.post_id = :postId 
+        AND ingredients.id = post_ingredients.ingredient_id`
       const selectTagsValue = {
         postId: req.query.id
       }
@@ -155,5 +159,30 @@ module.exports =  {
       }
     })
     res.send()
-}
+  }
+  , search: async function(req, res) {
+    const searchPostQuery = 
+      `select posts.* 
+        , users.*
+        , (
+            select group_concat(ingredients.ingredient, "--",ingredients.id)
+            from ingredients, post_ingredients 
+            where ingredients.id = post_ingredients.ingredient_id
+              and post_ingredients.post_id = posts.id
+      ) as ingredients
+      from posts, users, ingredients, post_ingredients
+      where posts.user_id = users.id 
+        and post_ingredients.post_id = posts.id
+        and ingredients.id = post_ingredients.ingredient_id
+        and if(:ingredientId != '', post_ingredients.ingredient_id in (:ingredientId), 1=1)
+        and if(:userId != '', users.id = :userId, 1=1)
+      group by posts.id`
+    const searchPostValue = {
+        ingredientId: req.query.keyword
+        , userId: req.query.userId
+      }
+    const result = await sequelize.query(searchPostQuery, {replacements: searchPostValue})
+    res.json({"result":result})
+  }
+
 };

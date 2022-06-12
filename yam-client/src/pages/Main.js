@@ -1,7 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
 import { useNavigate } from "react-router-dom"
 
 const Main = () => {
+
+    const [posts, setPosts] = useState(null)
 
     const navigate = useNavigate();
     let userInfo;
@@ -18,9 +20,23 @@ const Main = () => {
         navigate('/')
     }
 
+    if(posts === null) {
+        getPostInfo()
+    }
+
+    function getPostInfo() {
+        fetch('http://localhost:4000/search?' + new URLSearchParams({keyword: '', userId:''})
+        , {credentials: 'include'})
+        .then((response) => response.json())
+        .then(data => {
+            console.log(data.result[0])
+        })
+    }
+
     if(window.sessionStorage.getItem("userInfo") !== null) {
         userInfo = JSON.parse(window.sessionStorage.getItem('userInfo'))
     } 
+    
     return (
         <div>
             <h2>메인페이지</h2>
@@ -41,6 +57,21 @@ const Main = () => {
                     <button type="button" onClick={() => window.location.href='/join'}>회원 가입</button>
                 </div>
             }
+            <div>
+                태그 들어갈 자리
+            </div>
+            <div className="post">
+                <img src='' alt=''/>
+                <div>
+                    tags
+                </div>
+                <div>
+                    <span>제목</span><span>작성자 닉네임</span><span>작성 일자</span>
+                </div>
+                <div>
+                    레시피
+                </div>
+            </div>
         </div>
     )
 }
