@@ -9,13 +9,15 @@ const Main = () => {
     let userInfo;
 
     function search(keyword, userId) {
+        if(typeof keyword === 'object'){
+            keyword = keyword.id
+        }
         fetch('http://localhost:4000/search?' + new URLSearchParams({keyword: keyword, userId:userId})
         , {credentials: 'include'})
         .then((response) => response.json())
         .then(data => {
             let newPosts = Array(data.result[0])
             setPosts(newPosts[0])
-            console.log("posts", posts)
         })
     }
 
@@ -60,7 +62,7 @@ const Main = () => {
                     </div>
                     <div>
                         <button type="button" onClick={() => logout()}>로그아웃</button>
-                        <button type="button">사용자 정보</button>
+                        <button type="button" onClick={() => window.location.href='/modify'}>사용자 정보</button>
                     </div>
                 </div>
             : 
@@ -79,14 +81,24 @@ const Main = () => {
             <div> 
                 {posts.length > 0 ? 
                     posts.map((el, index) => {
+                        let ingredients = el.ingredients.split(',')
                         return (
                             <div className="post" key={el.postId}>
                                 <img src={"http://localhost:4000/" + el.imagePath} alt=''/>
                                 <div>
-                                    {el.ingredients}
+                                    {
+                                        ingredients.map((el, index) => {
+                                            let map = el.split('--')
+                                            let name = map[0]
+                                            let id = map[1]
+                                            return (
+                                                <span key={index} onClick={() => {search({id},'')}} >{name}</span>
+                                            )
+                                        })
+                                    }
                                 </div>
                                 <div>
-                                    <span>{el.title}</span><span>{el.nickname}</span><span>{el.created_at}</span>
+                                    <span>{el.title}</span><span>{el.nickname}</span><span> {el.createdAt}</span>
                                 </div>
                                 <div>
                                     {el.recipe}
