@@ -1,21 +1,29 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom"
 
 const Main = () => {
     const navigate = useNavigate();
     const [posts, setPosts] = useState([])
+    const [tags, setTags] = useState([])
 
     let userInfo;
 
-    search()
-
-    function search() {
-        fetch('http://localhost:4000/search?' + new URLSearchParams({keyword: '', userId:''})
+    function search(keyword, userId) {
+        fetch('http://localhost:4000/search?' + new URLSearchParams({keyword: keyword, userId:userId})
         , {credentials: 'include'})
         .then((response) => response.json())
         .then(data => {
             let newPosts = Array(data.result[0])
             setPosts(newPosts[0])
+            console.log("posts", posts)
+        })
+    }
+
+    function getTags() {
+        fetch('http://localhost:4000/tags', {credentials: 'include'})
+        .then((response) => response.json())
+        .then(data => {
+            setTags(data.result)
         })
     }
 
@@ -35,6 +43,12 @@ const Main = () => {
         userInfo = JSON.parse(window.sessionStorage.getItem('userInfo'))
     } 
 
+
+    useEffect(() => {
+        search('','')
+        getTags()
+    }, [])
+
     return (
         <div>
             <h2>메인페이지</h2>
@@ -42,7 +56,7 @@ const Main = () => {
             userInfo !== undefined
             ?   <div>
                     <div>
-                        <div>{userInfo['nickname']}님이 로그인했습니다.</div>
+                        <span onClick={()=> search('', userInfo['id'])}>{userInfo['nickname']}님이 로그인했습니다.</span>
                     </div>
                     <div>
                         <button type="button" onClick={() => logout()}>로그아웃</button>
@@ -56,7 +70,11 @@ const Main = () => {
                 </div>
             }
             <div>
-                태그 들어갈 자리<button onClick={()=> search()}>클릭</button>
+                {tags.map((el) => {
+                        return (
+                            <span key={el.id} onClick={(e) => search(el.id,'')}> {el.ingredient} </span>
+                            )
+                    })}
             </div>
             <div> 
                 {posts.length > 0 ? 

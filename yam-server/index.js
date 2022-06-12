@@ -39,6 +39,8 @@ app.get('/read', controllers.post.read)
 app.get('/remove', controllers.post.remove)
 app.get('/search', controllers.post.search)
 
+app.get('/tags', controllers.tag.tags)
+
 const HTTPS_PORT = process.env.HTTPS_PORT || 4000;
 let server = app.listen(HTTPS_PORT, () => console.log(`http server running ${HTTPS_PORT}`));
 

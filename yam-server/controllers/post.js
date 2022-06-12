@@ -183,7 +183,7 @@ module.exports =  {
         and if(:userId != '', users.id = :userId, 1=1)
       group by posts.id`
     const searchPostValue = {
-        ingredientId: req.query.keyword
+        ingredientId: Number(req.query.keyword)
         , userId: req.query.userId
       }
     const result = await sequelize.query(searchPostQuery, {replacements: searchPostValue})
