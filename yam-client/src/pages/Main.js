@@ -62,7 +62,7 @@ const Main = () => {
                     </div>
                     <div>
                         <button type="button" onClick={() => logout()}>로그아웃</button>
-                        <button type="button" onClick={() => window.location.href='/modify'}>사용자 정보</button>
+                        <button type="button" onClick={() => window.location.href='/modify'}>개인 정보 수정</button>
                     </div>
                 </div>
             : 
