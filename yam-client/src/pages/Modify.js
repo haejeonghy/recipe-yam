@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"
+import styled from 'styled-components'
+import StyledFormLabel from './common/StyleFormLabel'
 
 const Modify = () => {
     const navigate = useNavigate();
@@ -10,6 +12,24 @@ const Modify = () => {
     const [newPassword, setNewPassword] = useState('')
     const [nickname, setNickname] = useState(userInfo.nickname)
 
+    const StyledInput = styled.input`
+        height: 30px;
+        margin-top: 10px;
+        width: 200px;
+    `
+    const StyledButtonDiv = styled.div`
+        display:flex;
+        justify-content: center;
+        align-item:center;
+        margin-top: 50px;
+    `
+
+    const StyledButton = styled.button`
+        font-size: 30px;
+        margin: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+`
 
     function sendModify() {
         fetch('http://localhost:4000/modify', {
@@ -38,25 +58,25 @@ const Modify = () => {
         <div>
             <h2>개인정보 수정</h2>
             <div>
-                <label>이메일</label>
-                <label>{userInfo['email']}</label>    
+                <StyledFormLabel name="이메일"/>
+                <StyledFormLabel name={userInfo['email']}/>    
             </div> 
             <div>
-                <label>현재 비밀번호</label>
-                <input type="password" name="password" onChange={(e) => setCurrentPassword(e.target.value)} value={currentPassword}/>
+                <StyledFormLabel name="현재 비밀번호"/>
+                <StyledInput type="password" name="password" onChange={(e) => setCurrentPassword(e.target.value)} value={currentPassword}/>
             </div>
             <div>
-                <label>새 비밀번호</label>
-                <input type="password" name="password" onChange={(e) => setNewPassword(e.target.value)} value={newPassword}/>
+                <StyledFormLabel name="새 비밀번호"/>
+                <StyledInput type="password" name="password" onChange={(e) => setNewPassword(e.target.value)} value={newPassword}/>
             </div>
             <div>
-                <label>닉네임</label>
-                <input type="text" name="nickname" onChange={(e) => setNickname(e.target.value)} value={nickname}/>
+                <StyledFormLabel name="닉네임"/>
+                <StyledInput type="text" name="nickname" onChange={(e) => setNickname(e.target.value)} value={nickname}/>
             </div>
-            <div>
-                <button type="button" onClick={() => sendModify()}>수정</button>
-                <button type="button" onClick={() => window.location.href='/'}>취소</button>
-            </div>
+            <StyledButtonDiv>
+                <StyledButton type="button" onClick={() => sendModify()}>수정</StyledButton>
+                <StyledButton type="button" onClick={() => window.location.href='/'}>취소</StyledButton>
+            </StyledButtonDiv>
         </div>
     )
 }

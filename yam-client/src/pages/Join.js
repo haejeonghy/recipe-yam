@@ -1,7 +1,27 @@
 import React, {useState} from "react";
 import { useNavigate } from "react-router-dom"
 import './css/User.css';
+import styled from 'styled-components'
+import StyledFormLabel from './common/StyleFormLabel'
 
+const StyledInput = styled.input`
+    height: 30px;
+    margin-top: 10px;
+    width: 200px;
+`
+const StyledButtonDiv = styled.div`
+    display:flex;
+    justify-content: center;
+    align-item:center;
+    margin-top: 25px;
+`
+
+const StyledButton = styled.button`
+    font-size: 20px;
+    margin: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+`
 
 const Join = () => {
 
@@ -35,24 +55,21 @@ const Join = () => {
         <div>
             <h2>회원 가입</h2>
             <div>
-                <label>이메일</label>
-                <input type="email" name="email" onChange={(e) => setEmail(e.target.value)} value={email}/>    
+                <StyledFormLabel name="이메일"/>
+                <StyledInput type="email" name="email" onChange={(e) => setEmail(e.target.value)} value={email}/>    
             </div> 
             <div>
-                <label>비밀번호</label>
-                <input type="password" name="password" onChange={(e) => setPassword(e.target.value)} value={password}/>
+                <StyledFormLabel name="비밀번호"/>
+                <StyledInput type="password" name="password" onChange={(e) => setPassword(e.target.value)} value={password}/>
             </div>
             <div>
-                <label>닉네임</label>
-                <input type="text" name="nickname" onChange={(e) => setNickname(e.target.value)} value={nickname}/>
+                <StyledFormLabel name="닉네임"/>
+                <StyledInput type="text" name="nickname" onChange={(e) => setNickname(e.target.value)} value={nickname}/>
             </div>
-            <div>
-                <button type="button">구글 계정으로 가입하기</button>
-            </div>
-            <div>
-                <button type="button" onClick={() => join()}>가입</button>
-                <button type="button" onClick={() => window.location.href='/'}>취소</button>
-            </div>
+            <StyledButtonDiv>
+                <StyledButton type="button" onClick={() => join()}>가입</StyledButton>
+                <StyledButton type="button" onClick={() => window.location.href='/'}>메인으로</StyledButton>
+            </StyledButtonDiv>
         </div>
     )
 }

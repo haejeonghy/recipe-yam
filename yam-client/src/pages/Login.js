@@ -1,6 +1,31 @@
 import React, {useState} from "react";
 import { useNavigate } from "react-router-dom"
 import './css/User.css';
+import styled from 'styled-components'
+import StyledFormLabel from './common/StyleFormLabel'
+
+const StyledInput = styled.input`
+    height: 30px;
+    margin-top: 10px;
+    width: 200px;
+`
+const StyledButtonDiv = styled.div`
+    display:flex;
+    justify-content: center;
+    align-item:center;
+    margin-top: 25px;
+`
+
+const StyledButton = styled.button`
+font-size: 20px;
+    margin: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+`
+
+const StyledLabelDiv = styled.div`
+    margin-left: 40px;
+`
 
 const Login = (props) => {
 
@@ -33,21 +58,20 @@ const Login = (props) => {
         <div>
             <h2>로그인</h2>
             <div>
-                <label>이메일</label>
-                <input type="email" name="email" onChange={(e) => setEmail(e.target.value)} value={email}/>    
-            </div> 
-            <div>
-                <label>비밀번호</label>
-                <input type="password" name="password" onChange={(e) => setPassword(e.target.value)} value={password}/>
+                <StyledLabelDiv>
+                    <StyledFormLabel name="이메일"/>
+                    <StyledInput type="email" name="email" onChange={(e) => setEmail(e.target.value)} value={email}/>    
+                </StyledLabelDiv> 
+                <StyledLabelDiv>
+                    <StyledFormLabel name="비밀번호"/>
+                    <StyledInput type="password" name="password" onChange={(e) => setPassword(e.target.value)} value={password}/>
+                </StyledLabelDiv>
             </div>
-            <div>
-                <button type="button">구글 계정으로 로그인하기</button>
-            </div>
-            <div>
-                <button type="button" onClick={() => login()}>로그인</button>
-                <button type="button" onClick={() => window.location.href='/join'}>회원 가입</button>
-                <button type="button" onClick={() => window.location.href='/'}>취소</button>
-            </div>
+            <StyledButtonDiv>
+                <StyledButton type="button" onClick={() => login()}>로그인</StyledButton>
+                <StyledButton type="button" onClick={() => window.location.href='/join'}>회원 가입</StyledButton>
+                <StyledButton type="button" onClick={() => window.location.href='/'}>메인으로</StyledButton>
+            </StyledButtonDiv>
         </div>
     )
 }

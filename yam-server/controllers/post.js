@@ -82,8 +82,8 @@ module.exports =  {
         
         await post.update(
           {
-          title: req.body.title
-          , recipe: req.body.recipe
+            title: req.body.title
+            , recipe: req.body.recipe
           }
           , {
              where: {
@@ -181,7 +181,9 @@ module.exports =  {
         and ingredients.id = post_ingredients.ingredient_id
         and if(:ingredientId != '', post_ingredients.ingredient_id in (:ingredientId), 1=1)
         and if(:userId != '', users.id = :userId, 1=1)
-      group by posts.id`
+      group by posts.id
+      ORDER BY posts.id DESC
+      `
     const searchPostValue = {
         ingredientId: Number(req.query.keyword)
         , userId: req.query.userId
