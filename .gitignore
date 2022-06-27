@@ -1,0 +1,5 @@
+yam-server/images
+yam-server/node_modules
+.DS_Store
+.env
+launch.json
